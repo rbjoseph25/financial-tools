@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1099 Freelance Quarterly Tax Calculator</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #0f172a; color: #f8fafc; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .card { max-width: 450px; width: 100%; background: #1e293b; padding: 30px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); border: 1px solid #334155; }
+        h1 { font-size: 22px; margin-top: 0; margin-bottom: 20px; color: #38bdf8; text-align: center; }
+        .group { margin-bottom: 20px; }
+        label { display: block; font-weight: 500; margin-bottom: 8px; color: #94a3b8; font-size: 14px; }
+        input { width: 100%; padding: 12px; background: #0f172a; border: 1px solid #334155; border-radius: 8px; color: #fff; font-size: 16px; box-sizing: border-box; }
+        input:focus { border-color: #38bdf8; outline: none; }
+        button { width: 100%; background: #38bdf8; color: #0f172a; border: none; padding: 14px; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: background 0.2s; }
+        button:hover { background: #0ea5e9; }
+        .box { margin-top: 25px; padding: 15px; background: #0f172a; border-radius: 8px; border-left: 4px solid #38bdf8; display: none; }
+        .box p { margin: 5px 0; font-size: 15px; }
+        .promo { margin-top: 20px; padding: 15px; background: #1e3a8a; border: 1px dashed #38bdf8; border-radius: 8px; text-align: center; font-size: 14px; }
+        .promo-btn { display: inline-block; background: #10b981; color: white; text-decoration: none; padding: 10px 18px; border-radius: 6px; font-weight: bold; margin-top: 10px; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h1>1099 Tax Estimated Buffer</h1>
+    
+    <div class="group">
+        <label>Expected Gross Quarterly Revenue ($)</label>
+        <input type="number" id="revenue" value="5000">
+    </div>
+    
+    <div class="group">
+        <label>Estimated Quarterly Business Expenses ($)</label>
+        <input type="number" id="expenses" value="1000">
+    </div>
+
+    <button onclick="calculateTax()">Calculate IRS Estimated Payment</button>
+
+    <div class="box" id="resultBox">
+        <p><strong>Net Quarterly Income:</strong> <span id="netIncome" style="color: #fff;"></span></p>
+        <p><strong>Recommended IRS Safe Harbor Hold:</strong> <span id="taxOwed" style="color: #38bdf8; font-weight: bold;"></span></p>
+        
+        <div class="promo">
+            <strong>Automated Tax Write-Off Detection</strong>
+            <p>Don't overpay the IRS. Track mileage, tools, and house office space automatically using certified expense software.</p>
+            <a href="https://turbotax.com" target="_blank" class="promo-btn">Find Maximum 1099 Deductions</a>
+        </div>
+    </div>
+</div>
+
+<script>
+function calculateTax() {
+    const rev = parseFloat(document.getElementById('revenue').value) || 0;
+    const exp = parseFloat(document.getElementById('expenses').value) || 0;
+    const net = rev - exp;
+    
+    if (net <= 0) {
+        alert("No net profit detected. No estimated tax tracking required for this quarter.");
+        return;
+    }
+
+    // Standard 15.3% self-employment tax + estimated 15% effective income tax bracket hold
+    const selfEmploymentTax = net * 0.153;
+    const incomeTaxHold = net * 0.15;
+    const totalSafeHarbor = (selfEmploymentTax + incomeTaxHold).toFixed(2);
+    
+    document.getElementById('netIncome').innerText = "$" + net.toLocaleString();
+    document.getElementById('taxOwed').innerText = "$" + parseFloat(totalSafeHarbor).toLocaleString();
+    document.getElementById('resultBox').style.display = "block";
+}
+</script>
+
+</body>
+</html>
